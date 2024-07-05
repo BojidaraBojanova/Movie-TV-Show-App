@@ -13,7 +13,7 @@ export default function Header(){
             <nav className="search-nav">
                 <form action="" method="GET">
                     <input type="text" name="searchQuery" placeholder="Search..."/>
-                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </nav>
 
