@@ -93,3 +93,13 @@ body{
     color: black;
     cursor: pointer;
 }
+
+.site-footer{
+    background-color: #000;
+    color: #F4DFC8;
+    text-align: center;
+}
+
+.site-footer .wrapper{
+    padding: 1.5em;
+}
