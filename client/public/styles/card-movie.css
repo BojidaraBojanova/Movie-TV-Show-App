@@ -1,9 +1,8 @@
 .movies-container{
     display: flex;
-    /* gap: 1em; */
     flex-wrap: wrap;
     background-color: black;
-    padding: 4em 1em 4em 1em;
+    padding: 4em 0 4em 0;
     justify-content: space-evenly;
 }
 
@@ -21,6 +20,14 @@
     color: #F4DFC8;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3), 
               0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3), 
+              0 6px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .card Button{
