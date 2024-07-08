@@ -1,0 +1,35 @@
+.movies-container{
+    display: flex;
+    /* gap: 1em; */
+    flex-wrap: wrap;
+    background-color: black;
+    padding: 4em 1em 4em 1em;
+    justify-content: space-evenly;
+}
+
+.movies-show-library-container{
+    display: flex;
+    gap: 4em;
+    flex-wrap: wrap;
+    background-color: black;
+    padding: 2em;
+    justify-content: center;
+}
+
+.card{
+    background-color: #111111;
+    color: #F4DFC8;
+}
+
+.card Button{
+    background-color: #F4DFC8;
+    color: #111111;
+    border: 1px solid #111;
+    font-weight: bold;
+}
+
+.card Button:hover{
+    background-color: #fc4218;
+    border: 1px solid #111;
+    color: #F4DFC8;
+}

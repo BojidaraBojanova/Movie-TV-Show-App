@@ -2,6 +2,8 @@
 @import "navigation.css";
 @import "slideshow.css";
 @import 'topMovies.css';
+@import 'card-movie.css';
+@import 'movies.css';
 
 *{
     padding: 0;

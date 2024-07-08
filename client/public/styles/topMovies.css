@@ -12,27 +12,3 @@ h2{
     font-style: italic;
 }
 
-.movies-container{
-    display: flex;
-    gap: 1em;
-    background-color: black;
-    padding: 1em;
-}
-
-.card{
-    background-color: #111111;
-    color: #F4DFC8;
-}
-
-.card Button{
-    background-color: #F4DFC8;
-    color: #111111;
-    border: 1px solid #111;
-    font-weight: bold;
-}
-
-.card Button:hover{
-    background-color: #fc4218;
-    border: 1px solid #111;
-    color: #F4DFC8;
-}
