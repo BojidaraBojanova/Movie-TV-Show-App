@@ -34,6 +34,8 @@ export default function Registration(){
             const data = await response.json();
             if(response.ok){
                 setMessage(data.message);
+                localStorage.setItem('token', data.token);
+                history.pushState('/user');
             }else{
                 setMessage(data.message || 'Error occurred');
             }
@@ -77,7 +79,7 @@ export default function Registration(){
                     Submit
                 </Button>
 
-                {message && <p>{message}</p>}
+                {message && <p className='message'>{message}</p>}
             </Form>
         </div>
         </>

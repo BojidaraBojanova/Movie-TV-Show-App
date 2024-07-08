@@ -5,6 +5,8 @@ const { SECRET_KEY } = require('../config');
 
 exports.getAllUsers = () => User.find();
 
+exports.getOne = (userId) => User.findById(userId);
+
 exports.register = async(userData) => {
 
     console.log(userData);
@@ -33,6 +35,30 @@ exports.register = async(userData) => {
         lastName: createdUser.lastName,
         token
     };
+}
+
+exports.login = async(userData) => {
+    const user = await User.findOne({ email: userData.email });
+
+    if(!user){
+        throw new Error('No such user is registered!');
+    }
+
+    const isValid = await bcrypt.compare(userData.password, user.password);
+
+    if(!isValid){
+        throw new Error('Wrong password!');
+    }
+
+    const token = await generateToken(user);
+
+    return{
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        token
+    }
 }
 
 function generateToken(user){
