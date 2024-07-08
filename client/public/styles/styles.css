@@ -4,6 +4,7 @@
 @import 'topMovies.css';
 @import 'card-movie.css';
 @import 'movies.css';
+@import 'login.css';
 
 *{
     padding: 0;
