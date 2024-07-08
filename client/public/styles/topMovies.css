@@ -27,11 +27,12 @@ h2{
 .card Button{
     background-color: #F4DFC8;
     color: #111111;
-    border: 1px solid #fc4218;
+    border: 1px solid #111;
+    font-weight: bold;
 }
 
 .card Button:hover{
     background-color: #fc4218;
-    border: 1px solid #fc4218;
+    border: 1px solid #111;
     color: #F4DFC8;
 }
