@@ -1,0 +1,34 @@
+.movies-wrapper{
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}
+
+h2{
+    color: #F4DFC8;
+    margin: 1em 0 1em 1em;
+}
+
+.movies-container{
+    display: flex;
+    gap: 1em;
+    background-color: black;
+    padding: 1em;
+}
+
+.card{
+    background-color: #111111;
+    color: #F4DFC8;
+}
+
+.card Button{
+    background-color: #F4DFC8;
+    color: #111111;
+    border: 1px solid #fc4218;
+}
+
+.card Button:hover{
+    background-color: #fc4218;
+    border: 1px solid #fc4218;
+    color: #F4DFC8;
+}

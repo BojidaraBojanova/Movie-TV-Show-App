@@ -1,4 +1,5 @@
 import Slideshow from "./Slideshow";
+import TopMovies from "./TopMovies";
 
 const images = [
     'https://www.vintagemovieposters.co.uk/wp-content/uploads/2023/03/IMG_1887-scaled.jpeg',
@@ -12,6 +13,7 @@ export default function Home(){
     return(
         <>
             <Slideshow images={images} delay={3000}/>
+            <TopMovies title='Highest Rated'/>
         </>
     )
 }
