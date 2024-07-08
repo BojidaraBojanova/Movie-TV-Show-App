@@ -19,7 +19,7 @@ export default function Header(){
             <nav className="main-nav">
                 <ul>
                     <li><a href="">Home</a></li>
-                    <li><a href="">Films</a></li>
+                    <li><a href="">Movies</a></li>
                     <li><a href="">TV Show</a></li>
                     <li><a href="">User</a></li>
                     <li><a href="">Login</a></li>

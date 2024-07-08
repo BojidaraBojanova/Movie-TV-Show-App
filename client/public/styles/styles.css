@@ -23,10 +23,10 @@ body, input, textarea, button{
     font: inherit;
 }
 
-h1{font-size: 2.4em;}
+/* h1{font-size: 2.4em;}
 h2{font-size: 2.0em;}
 h3{font-size: 1.6em;}
-h2{font-size: 1.2em;}
+h2{font-size: 1.2em;} */
 
 body{
     background-color: #111111;
@@ -37,6 +37,7 @@ body{
     background-color: #000;
     color: #F4DFC8;
     text-align: center;
+    margin-top: 4em;
 }
 
 .site-footer .wrapper{

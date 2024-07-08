@@ -14,6 +14,7 @@ export default function Home(){
         <>
             <Slideshow images={images} delay={3000}/>
             <TopMovies title='Highest Rated'/>
+            <TopMovies title='Last Added'/>
         </>
     )
 }

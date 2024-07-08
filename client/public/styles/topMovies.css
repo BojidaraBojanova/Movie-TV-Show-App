@@ -1,12 +1,15 @@
 .movies-wrapper{
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 h2{
-    color: #F4DFC8;
+    color: #fc4218;
     margin: 1em 0 1em 1em;
+    font-weight: bolder;
+    font-style: italic;
 }
 
 .movies-container{
