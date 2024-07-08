@@ -1,4 +1,3 @@
-import logo from '../assets/images/logo.gif'
 
 export default function Header(){
     return(

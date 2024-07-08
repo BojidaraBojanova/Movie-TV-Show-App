@@ -1,7 +1,8 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Slideshow from "./components/Slideshow";
-import './styles.css'
+
+import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
+import Slideshow from "./components/home/Slideshow";
+import '../public/styles/styles.css'
 
 const images = [
   'https://www.vintagemovieposters.co.uk/wp-content/uploads/2023/03/IMG_1887-scaled.jpeg',
