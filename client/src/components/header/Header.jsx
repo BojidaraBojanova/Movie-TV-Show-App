@@ -3,40 +3,13 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { NavLink, Link } from 'react-router-dom';
 
 export default function Header(){
     return(
-    //     <header className="section site-header">
-    //     <div className="wrapper">
-    //         <h6 className="site-logo">
-    //             <a href="#">
-    //                 {/* <img src={logo} alt="logo" /> */}
-    //             </a>
-    //         </h6>
-
-    //         <nav className="search-nav">
-    //             <form action="" method="GET">
-    //                 <input type="text" name="searchQuery" placeholder="Search..."/>
-    //                 <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
-    //             </form>
-    //         </nav>
-
-    //         <nav className="main-nav">
-    //             <ul>
-    //                 <li><a href="">Home</a></li>
-    //                 <li><a href="">Movies</a></li>
-    //                 <li><a href="">TV Show</a></li>
-    //                 <li><a href="">User</a></li>
-    //                 <li><a href="">Login</a></li>
-    //                 <li><a href="">Registration</a></li>
-    //             </ul>
-    //         </nav>
-    //     </div>
-    // </header>
-    <Navbar expand="lg" className="navbar">
+    <Navbar expand="lg" variant="dark" className="navbar">
       <Container fluid>
-        <Navbar.Brand href="#" className='logo'></Navbar.Brand>
+        <Navbar.Brand as={Link} to="/" className='logo'></Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -44,18 +17,18 @@ export default function Header(){
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1" className='nav-link'>Home</Nav.Link>
-            <Nav.Link href="#action2" className='nav-link'>Movies</Nav.Link>
-            <Nav.Link href="#action2" className='nav-link'>TV Shows</Nav.Link>
-            <Nav.Link href="#action2" className='nav-link'>User</Nav.Link>
-            <Nav.Link href="#action2" className='nav-link'>Login</Nav.Link>
-            <Nav.Link href="#action2" className='nav-link'>Registration</Nav.Link>
+            <Nav.Link as={Link} to='/' className='nav-link' >Home</Nav.Link>
+            <Nav.Link as={Link} to="/movies" className='nav-link' >Movies</Nav.Link>
+            <Nav.Link as={Link} to="/tvShows" className='nav-link' >TV Shows</Nav.Link>
+            <Nav.Link as={Link} to="/user" className='nav-link' >User</Nav.Link>
+            <Nav.Link as={Link} to="/login" className='nav-link' >Login</Nav.Link>
+            <Nav.Link as={Link} to="/registration" className='nav-link' >Registration</Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
-              className="me-2"
+              className="me-2 search-input"
               aria-label="Search"
             />
             <Button className='btn-search'>Search</Button>

@@ -8,6 +8,11 @@
     overflow: hidden;
 }
 
+.search-input:focus{
+    border: 2px solid #fc4218;
+    box-shadow: 0 0 5px rgba(246, 118, 20, 0.5);
+}
+
 .navbar{
     background-color: #000;
 }
@@ -20,6 +25,7 @@
 .nav-link:hover{
     color: #fc4218;
 }
+
 
 .btn-search{
     background-color: #F4DFC8;
