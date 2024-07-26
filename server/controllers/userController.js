@@ -3,7 +3,7 @@ const router = require('express').Router();
 const userService = require('../services/userService');
 
 
-router.post('/registration', async(req, res) => {
+router.post('/register', async(req, res) => {
     try{
         const userData = req.body;
 
@@ -27,5 +27,14 @@ router.post('/login', async(req, res) => {
     }
 });
 
+router.get('/logout', async(req, res) => {
+    try{
+        res.clearCookie('user');
+        res.status(200).json({ok: true, message: 'Logout successful'});
+    }catch(error){
+        console.error('Error in logout', error);
+        res.status(500).json({ message: error.message });
+    }
+})
 
 module.exports = router;

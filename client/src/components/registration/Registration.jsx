@@ -1,65 +1,45 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../contexts/authContext';
+import useForm from '../../hooks/useForm';
+
+const RegistrationFormKeys = {
+    FirstName: 'firstName',
+    LastName: 'lastName',
+    Email: 'email',
+    Password: 'password',
+    ConfirmPassword: 'confirm-password'
+}
 
 export default function Registration(){
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [rePassword, setRePassword] = useState('');
-    const [message, setMessage] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const { registerSubmitHandler } = useContext(AuthContext);
+    const { values, onChange, onSubmit } = useForm(registerSubmitHandler, {
+        [RegistrationFormKeys.FirstName]: '',
+        [RegistrationFormKeys.LastName]: '',
+        [RegistrationFormKeys.Email]:'',
+        [RegistrationFormKeys.Password]: '',
+        [RegistrationFormKeys.ConfirmPassword]: '',
+    });
 
-        if(password !== rePassword){
-            setMessage('Passwords do not match');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:3000/user/registration', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                    password
-                })
-            });
-            const data = await response.json();
-            if(response.ok){
-                setMessage(data.message);
-                localStorage.setItem('token', data.token);
-                history.pushState('/user');
-            }else{
-                setMessage(data.message || 'Error occurred');
-            }
-        } catch (error) {
-            setMessage('Error occurred')
-        }
-    }
     return(
         <>
             <div className='form-wrapper'>
             <h1>Registration</h1>
-            <Form className='form-container' onSubmit={handleSubmit}>
+            <Form className='form-container' onSubmit={onSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicFirstName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" className='input' placeholder="Enter First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <Form.Control type="text" className='input' name='firstName' placeholder="Enter First Name" values={values[RegistrationFormKeys.FirstName]} onChange={onChange} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicLastName">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" className='input' placeholder="Enter Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <Form.Control type="text" className='input' name='lastName' placeholder="Enter Last Name" values={values[RegistrationFormKeys.LastName]} onChange={onChange} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" className='input' placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <Form.Label>Email address</Form.Label>     
+                    <Form.Control type="email" className='input' name='email' placeholder="Enter email" values={values[RegistrationFormKeys.Email]} onChange={onChange}/>
                     <Form.Text className="text">
                         We'll never share your email with anyone else.
                     </Form.Text>
@@ -67,19 +47,18 @@ export default function Registration(){
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" className='input' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <Form.Control type="password" className='input' name='password' placeholder="Password" values={values[RegistrationFormKeys.Password]} onChange={onChange}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicRePassword">
-                    <Form.Label>Repeat the Password</Form.Label>
-                    <Form.Control type="password" className='input' placeholder="Repeat the Password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control type="password" className='input' name='confirmPassword' placeholder="Confirm Password" values={values[RegistrationFormKeys.ConfirmPassword]} onChange={onChange} />
                 </Form.Group>
 
                 <Button type="submit" className='login-btn'>
                     Submit
                 </Button>
 
-                {message && <p className='message'>{message}</p>}
             </Form>
         </div>
         </>
