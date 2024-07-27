@@ -1,0 +1,122 @@
+.movie-details{
+    width: 100%;
+    height: 100%;
+}
+
+.img-video-container{
+    display: flex;
+    width: 100%;
+    padding: 1em;
+    gap: 1em;
+    background-color: #000;
+}
+
+.img-container{
+    width: 100%;
+}
+.img-container img{
+    width: 100%;
+    height: 100%;
+}
+
+.data{
+    color: #F4DFC8;
+    padding: 0.5em 0 0 1em;
+    border-top: 2px solid #111111;
+}
+
+.releaseDate{
+    border-bottom: 2px solid #111111;
+}
+
+.description{
+    padding: 1em;
+    color: #F4DFC8;
+}
+
+.label{
+    color: #fc4218;
+}
+
+.title-ratings-container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
+    align-items: center;
+}
+
+.ratings-container{
+    display: flex;
+    gap: 0.1em;
+    padding-right: 1em;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.ratings-container i{
+    color: #FFD43B;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+}
+
+.ratings-container h5{
+    color: #F4DFC8;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    margin-top: 0.3em;
+
+}
+
+.movie-details h1{
+    text-align: center;
+}
+
+.buttons{
+    display: flex;
+    gap: 2em;
+    padding: 1em;
+    justify-content: center;
+}
+
+.buttons i{
+    padding-right: 0.2em;
+}
+
+.yellow-btn{
+    background-color: #FFD43B;
+    color: #111111;
+    border: #FFD43B;
+    font-weight: bold;
+}
+
+.yellow-btn:hover{
+    background-color: #fcc500;
+    color: #111111;
+}
+
+.white-btn{
+    background-color: #F4DFC8;
+    color: #111111;
+    border: #111111;
+    font-weight: bold;
+}
+
+.white-btn:hover{
+    background-color: #f8d7b3;
+    color: #111111;
+}
+
+.red-btn{
+    background-color: #fc4218;
+    border: #111111;
+    font-weight: bold;
+}
+.red-btn:hover{
+    background-color: #fd2e00;
+
+}

@@ -13,3 +13,9 @@ export const getAll = async() => {
 
     return result;
 }
+
+export const getOne = async(movieId) => {
+    const result = await request.get(`${baseUrl}/${movieId}`,);
+
+    return result;
+}

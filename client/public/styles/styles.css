@@ -5,6 +5,7 @@
 @import 'card-movie.css';
 @import 'movies.css';
 @import 'forms.css';
+@import 'movie-details.css';
 
 *{
     padding: 0;

@@ -10,3 +10,5 @@ exports.add = async(userId, movieData) => {
 }
 
 exports.getAllMoves = () => Movie.find();
+
+exports.getOne = (movieId) => Movie.findById(movieId);
