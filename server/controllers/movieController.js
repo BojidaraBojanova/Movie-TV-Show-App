@@ -18,5 +18,16 @@ router.post('/add', async(req, res) => {
     }
 })
 
+router.get('', async(req, res) => {
+    try{
+        const movies = await movieService.getAllMoves();
+
+        res.status(200).json(movies);
+    }catch(error){
+        console.error('Error in fetching the movies', error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
 
 module.exports = router;

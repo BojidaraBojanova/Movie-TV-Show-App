@@ -7,3 +7,9 @@ export const add = async(movieData) => {
 
     return result.data;
 }
+
+export const getAll = async() => {
+    const result = await request.get(baseUrl);
+
+    return result;
+}

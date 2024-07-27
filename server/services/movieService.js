@@ -8,3 +8,5 @@ exports.add = async(userId, movieData) => {
 
     return addedMovie
 }
+
+exports.getAllMoves = () => Movie.find();
