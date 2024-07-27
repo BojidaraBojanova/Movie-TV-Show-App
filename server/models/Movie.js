@@ -46,7 +46,7 @@ const movieSchema = new mongoose.Schema({
         ref: 'Comment'
     }],
     releaseDate: {
-        type:String
+        type:Date
     },
     addedBy: {
         type: mongoose.Schema.Types.ObjectId,  ref:'User', required: true
