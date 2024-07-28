@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as movieService from '../../services/movieService';
 import { useParams } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import AuthContext from "../../contexts/authContext";
 
 
 export default function MovieDetails() {
     const [movie, setMovie] = useState({});
+    const {userId, isAuthenticated} = useContext(AuthContext);
     const { movieId } = useParams();
 
     useEffect(() => {
@@ -80,10 +82,21 @@ export default function MovieDetails() {
                         <p>{movie.description}</p>
                     </div>
                     <div className="buttons">
-                        <Button className="yellow-btn"><i className="fa-regular fa-star"></i>Rate</Button>
-                        <Button>+ Add to Watchlist</Button>
-                        <Button className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Button>
-                        <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
+                        {isAuthenticated && (
+                            <>
+                                <Button className="yellow-btn"><i className="fa-regular fa-star"></i>Rate</Button>
+                                <Button>+ Add to Watchlist</Button>
+                            </>
+                        )}
+                       
+                        {userId === movie.addedBy && (
+                            <>
+                                <Button className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Button>
+                                <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
+                            </>
+
+                        )}
+                       
                     </div>
                 </div>
             </div>
