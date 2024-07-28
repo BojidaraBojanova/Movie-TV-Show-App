@@ -28,19 +28,19 @@ const seriesSchema = new mongoose.Schema({
     },
     ratings: [{
         user: {
-            type: mongoose.Schema.ObjectId, 
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
         rating: {
             type: Number,
-            min: 1,
-            max: 5,
+            min: 0,
+            max: 10
         }
     }],
     averageRating: {
         type: Number,
-        min: 1,
-        max: 5
+        min: 0,
+        max: 10
     },
     comments: [{
         type: mongoose.Schema.ObjectId,
@@ -61,9 +61,10 @@ const seriesSchema = new mongoose.Schema({
 
 seriesSchema.pre('save', function(next){
     if(this.ratings.length > 0){
-        this.averageRating = this.ratings.reduce((acc, curr) => acc + curr.rating, 0) / this.ratings.length;
+        const total = this.ratings.reduce((acc, curr) => acc + curr.rating, 0);
+        this.averageRating = total / this.ratings.length;
     }else{
-        this.averageRating = null;
+        this.averageRating = 0;
     }
     next();
 });

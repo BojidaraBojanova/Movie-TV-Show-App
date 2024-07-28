@@ -1,16 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import * as tvShowService from '../../services/tvShowService';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import AuthContext from "../../contexts/authContext";
+import RatingModal from "../ratingModal/RatingModal";
+import { pathToUrl } from "../../utils/pathUtils";
+import Path from "../../paths"
+
 
 export default function TvShowDetails(){
     const [tvShow, setTvShow] = useState({});
     const { tvShowId } = useParams();
     const {userId, isAuthenticated} = useContext(AuthContext);
+    const [showRatingModal, setShowRatingModal] = useState(false);
 
-    console.log(userId)
-    console.log(tvShow)
 
     useEffect(() => {
         tvShowService.getOne(tvShowId)
@@ -24,7 +27,7 @@ export default function TvShowDetails(){
     const releaseDate = new Date(releaseDateString);
     const year = releaseDate.getFullYear() || 'Unknown Year';
     const month = releaseDate.getMonth() || 'Unknown Month';
-    const day = releaseDate.getDay() || 'Unknown Day';
+    const day = releaseDate.getDate() || 'Unknown Day';
 
     const getYouTubeEmbedUrl = (url) => {
         if (!url) return '';
@@ -32,13 +35,29 @@ export default function TvShowDetails(){
         return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
     };
 
+    const handleRate = async (rating) => {
+        try {
+            const updatedTvShow = await tvShowService.rateTvShow(tvShowId, userId, rating);
+            setTvShow(updatedTvShow); // Update the movie state with the new rating
+            setShowRatingModal(false);
+        } catch (error) {
+            console.error('Error rating Tv-Show:', error);
+        }
+    };
+
+    let averageRating = tvShow.averageRating;
+
+    if(!averageRating){
+        averageRating = 0;
+    }
+
     return (
         <section className="movie-details">
             <h1>{tvShow.title}({year})</h1>
 
             <div className="ratings-container">
                     <i className="fa-solid fa-star"></i>
-                    <h5>5.2/10</h5>
+                    <h5>{averageRating}/10</h5>
                 </div>
             <div className="img-video-container">
                 <div className="img-container">
@@ -82,18 +101,24 @@ export default function TvShowDetails(){
                     <div className="buttons">
                         {isAuthenticated && (
                             <>
-                                <Button className="yellow-btn"><i className="fa-regular fa-star"></i>Rate</Button>
+                                <Button className="yellow-btn" onClick={() => setShowRatingModal(true)}><i className="fa-regular fa-star"></i>Rate</Button>
                                 <Button>+ Add to Watchlist</Button>
                             </>
                         )}
                         {userId === tvShow.addedBy && (
                             <>
-                                <Button className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Button>
+                                <Link to={pathToUrl(Path.SerialEdit, {tvShowId})} className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Link>
                                 <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
                             </>
 
                         )}
                     </div>
+                    <RatingModal 
+                        show={showRatingModal}
+                        handleClose={() => setShowRatingModal(false)}
+                        handleRate={handleRate}
+                        title = 'TV-Show'
+                    />
                 </div>
             </div>
 

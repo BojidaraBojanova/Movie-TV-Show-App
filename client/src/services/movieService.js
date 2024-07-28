@@ -19,3 +19,13 @@ export const getOne = async(movieId) => {
 
     return result;
 }
+
+export const rateMovie = async(movieId, userId, rating) => {
+    return await request.post(`${baseUrl}/${movieId}/rate`, {userId, rating: Number(rating)})
+}
+
+export const edit = async (movieId, movieData) => {
+    const result = await request.put(`${baseUrl}/edit/${movieId}`, movieData)
+
+    return result;
+}

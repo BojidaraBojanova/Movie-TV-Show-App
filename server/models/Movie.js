@@ -32,14 +32,14 @@ const movieSchema = new mongoose.Schema({
         },
         rating: {
             type: Number,
-            min: 1,
-            max: 5
+            min: 0,
+            max: 10
         }
     }],
     averageRating: {
         type: Number,
-        min: 1,
-        max: 5
+        min: 0,
+        max: 10
     },
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -59,9 +59,10 @@ const movieSchema = new mongoose.Schema({
 
 movieSchema.pre('save', function(next){
     if(this.ratings.length > 0){
-        this.averageRating = this.ratings.reduce((acc, curr) => acc + curr.rating, 0) / this.ratings.length;
+        const total = this.ratings.reduce((acc, curr) => acc + curr.rating, 0);
+        this.averageRating = total / this.ratings.length;
     }else{
-        this.averageRating = null;
+        this.averageRating = 0;
     }
     next();
 });

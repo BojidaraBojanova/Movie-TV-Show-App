@@ -19,3 +19,13 @@ export const getOne = async(tvShowId) => {
 
     return result;
 }
+
+export const rateTvShow = async(tvShowId, userId, rating) => {
+    return await request.post(`${baseUrl}/${tvShowId}/rate`, {userId, rating: Number(rating)})
+}
+
+export const edit = async (tvShowId, tvShowData) => {
+    const result = await request.put(`${baseUrl}/edit/${tvShowId}`, tvShowData)
+
+    return result;
+}

@@ -1,13 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import * as movieService from '../../services/movieService';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import AuthContext from "../../contexts/authContext";
-
+import RatingModal from "../ratingModal/RatingModal";
+import { pathToUrl } from "../../utils/pathUtils";
+import Path from "../../paths"
 
 export default function MovieDetails() {
     const [movie, setMovie] = useState({});
     const {userId, isAuthenticated} = useContext(AuthContext);
+    const [showRatingModal, setShowRatingModal] = useState(false);
     const { movieId } = useParams();
 
     useEffect(() => {
@@ -24,7 +27,7 @@ export default function MovieDetails() {
     const releaseDate = new Date(releaseDateString);
     const year = releaseDate.getFullYear() || 'Unknown Year';
     const month = releaseDate.getMonth() || 'Unknown Month';
-    const day = releaseDate.getDay() || 'Unknown Day';
+    const day = releaseDate.getDate() || 'Unknown Day';
 
 
     // Extract video ID and return YouTube embed URL
@@ -34,13 +37,29 @@ export default function MovieDetails() {
         return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
     };
 
+    const handleRate = async (rating) => {
+        try {
+            const updatedMovie = await movieService.rateMovie(movieId, userId, rating);
+            setMovie(updatedMovie); // Update the movie state with the new rating
+            setShowRatingModal(false);
+        } catch (error) {
+            console.error('Error rating movie:', error);
+        }
+    };
+
+    let averageRating = movie.averageRating;
+
+    if(!averageRating){
+        averageRating = 0;
+    }
+
     return (
         <section className="movie-details">
             <h1>{movie.title}({year})</h1>
 
             <div className="ratings-container">
                     <i className="fa-solid fa-star"></i>
-                    <h5>5.2/10</h5>
+                    <h5>{averageRating}/10</h5>
                 </div>
             <div className="img-video-container">
                 <div className="img-container">
@@ -84,20 +103,26 @@ export default function MovieDetails() {
                     <div className="buttons">
                         {isAuthenticated && (
                             <>
-                                <Button className="yellow-btn"><i className="fa-regular fa-star"></i>Rate</Button>
+                                <Button className="yellow-btn" onClick={() => setShowRatingModal(true)}><i className="fa-regular fa-star"></i>Rate</Button>
                                 <Button>+ Add to Watchlist</Button>
                             </>
                         )}
                        
                         {userId === movie.addedBy && (
                             <>
-                                <Button className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Button>
+                                <Link to={pathToUrl(Path.MovieEdit, {movieId})} className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Link>
                                 <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
                             </>
 
                         )}
                        
                     </div>
+                    <RatingModal 
+                        show={showRatingModal}
+                        handleClose={() => setShowRatingModal(false)}
+                        handleRate={handleRate}
+                        title = 'Movie'
+                    />
                 </div>
             </div>
 

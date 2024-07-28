@@ -40,4 +40,30 @@ router.get('/:movieId', async(req, res) => {
     }
 })
 
+router.post('/:movieId/rate', async (req, res) => {
+    const { movieId } = req.params;
+    const { userId, rating } = req.body;
+
+    try {
+        const updatedMovie = await movieService.rateMovie(movieId, userId, Number(rating));
+        res.status(200).json(updatedMovie);
+    } catch (error) {
+        console.error('Error rating movie', error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+router.put('/edit/:movieId', async(req, res) => {
+    const movieData = req.body;
+    const movieId = req.params.movieId;
+
+    try {
+        const editedMovie = await movieService.editMovie(movieId, movieData);
+        res.status(201).json(editedMovie)
+    } catch (error) {
+        console.error('Error editing the Movie', error);
+        res.status(500).json({message: error.message});
+    }
+})
+
 module.exports = router;
