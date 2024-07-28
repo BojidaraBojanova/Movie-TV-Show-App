@@ -46,6 +46,9 @@ const seriesSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Comment'
     }],
+    releaseDate: {
+        type:Date
+    },
     addedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

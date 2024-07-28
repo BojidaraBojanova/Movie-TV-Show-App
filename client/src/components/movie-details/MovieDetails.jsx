@@ -55,7 +55,6 @@ export default function MovieDetails() {
                             height="515"
                             src={getYouTubeEmbedUrl(movie.trailerUrl)}
                             title="YouTube video player"
-                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         ></iframe>

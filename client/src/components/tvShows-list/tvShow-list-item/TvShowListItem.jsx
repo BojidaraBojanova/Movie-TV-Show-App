@@ -9,7 +9,7 @@ export default function MovieListItem({
     genre
 }) {
     return (
-        <Link to={`/movies/${_id}`} style={{ textDecoration: 'none' }}>
+        <Link to={`/tvShows/${_id}`} style={{ textDecoration: 'none' }}>
             <Card className='card' style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={imageUrl} />
                 <Card.Body className='card-body'>
