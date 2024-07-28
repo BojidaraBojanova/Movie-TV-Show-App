@@ -17,3 +17,71 @@ h1{
     justify-content: center;
     align-items: center;
 }
+
+.create-comment{
+    background-color: #000;
+    padding: 1em;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+}
+
+.comment{
+    width: 100%;
+    background-color: #111;
+    color: #F4DFC8;
+}
+
+.btn{
+    border: 1px solid #F4DFC8;
+}
+
+.btn:hover{
+    border: 1px solid #F4DFC8;
+    background-color: #111;
+    color: #F4DFC8;
+}
+
+.no-comment{
+    color: #F4DFC8;
+    padding: 1em;
+}
+
+.details-comments{
+    padding: 1em;
+    background-color: #000;
+}
+
+.details-comments h3{
+    color: #F4DFC8;
+}
+
+.user-email{
+    color: #333333;
+}
+
+.details-comments ul{
+    list-style: none;
+}
+
+.details-comments ul li{
+    width: 100%;
+    height: 100%;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #000;
+}
+
+.details-comments ul li p{
+    margin-top: 1em;
+}
+
+.tv-show-details h1{
+    text-align: center;
+}

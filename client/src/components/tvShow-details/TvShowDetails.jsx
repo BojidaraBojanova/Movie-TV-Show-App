@@ -1,33 +1,52 @@
 import { useContext, useEffect, useState } from "react";
 import * as tvShowService from '../../services/tvShowService';
-import { useParams, Link } from "react-router-dom";
+import * as commentService from '../../services/commentService';
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import AuthContext from "../../contexts/authContext";
 import RatingModal from "../ratingModal/RatingModal";
 import { pathToUrl } from "../../utils/pathUtils";
-import Path from "../../paths"
+import Path from "../../paths";
+import useForm from "../../hooks/useForm";
 
-
-export default function TvShowDetails(){
+export default function TvShowDetails() {
+    const navigate = useNavigate();
     const [tvShow, setTvShow] = useState({});
     const { tvShowId } = useParams();
-    const {userId, isAuthenticated} = useContext(AuthContext);
+    const { userId, isAuthenticated, email } = useContext(AuthContext);
     const [showRatingModal, setShowRatingModal] = useState(false);
+    const [comments, setComments] = useState([]);
 
+    const addCommentHandler = async (values) => {
+        try {
+            const newComment = await commentService.createTvShow(tvShowId, { user: userId, content: values.comment });
+            if (email) {
+                newComment.user = { email };
+            }
+            setComments((prevComments) => [...prevComments, newComment]);
+            values.comment = ''; 
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    };
+
+    const { values, onChange, onSubmit } = useForm(addCommentHandler, { comment: '' });
 
     useEffect(() => {
-        tvShowService.getOne(tvShowId)
-            .then(setTvShow)
-            .catch(error => {
-                console.error('Error fetching TV-Show details:', error)
-            })
-    }, [tvShowId])
+        const fetchTvShowAndComments = async () => {
+            try {
+                const tvShowData = await tvShowService.getOne(tvShowId);
+                setTvShow(tvShowData);
 
-    const releaseDateString = tvShow.releaseDate || '';
-    const releaseDate = new Date(releaseDateString);
-    const year = releaseDate.getFullYear() || 'Unknown Year';
-    const month = releaseDate.getMonth() || 'Unknown Month';
-    const day = releaseDate.getDate() || 'Unknown Day';
+                const commentsData = await commentService.getAllTvShowComments(tvShowId);
+                setComments(commentsData.comments);
+            } catch (error) {
+                console.error('Error fetching TV-Show details and comments:', error);
+            }
+        };
+
+        fetchTvShowAndComments();
+    }, [tvShowId]);
 
     const getYouTubeEmbedUrl = (url) => {
         if (!url) return '';
@@ -38,27 +57,42 @@ export default function TvShowDetails(){
     const handleRate = async (rating) => {
         try {
             const updatedTvShow = await tvShowService.rateTvShow(tvShowId, userId, rating);
-            setTvShow(updatedTvShow); // Update the movie state with the new rating
+            setTvShow(updatedTvShow); // Update the TV show state with the new rating
             setShowRatingModal(false);
         } catch (error) {
-            console.error('Error rating Tv-Show:', error);
+            console.error('Error rating TV-Show:', error);
         }
     };
 
-    let averageRating = tvShow.averageRating;
+    const deleteButtonClickHandler = async () => {
+        const hasConfirmed = window.confirm(`Are you sure you want to delete ${tvShow.title}`);
+        if (hasConfirmed) {
+            try {
+                await tvShowService.remove(tvShowId);
+                navigate('/tvShows');
+            } catch (error) {
+                console.error('Error deleting TV-Show:', error);
+            }
+        }
+    };
 
-    if(!averageRating){
-        averageRating = 0;
-    }
+    const releaseDateString = tvShow.releaseDate || '';
+    const releaseDate = new Date(releaseDateString);
+    const year = releaseDate.getFullYear() || 'Unknown Year';
+    const month = releaseDate.getMonth() + 1 || 'Unknown Month'; // Month is zero-indexed
+    const day = releaseDate.getDate() || 'Unknown Day';
+
+    let averageRating = tvShow.averageRating || 0;
 
     return (
-        <section className="movie-details">
-            <h1>{tvShow.title}({year})</h1>
+        <section className="tv-show-details">
+            <h1>{tvShow.title} ({year})</h1>
 
             <div className="ratings-container">
-                    <i className="fa-solid fa-star"></i>
-                    <h5>{averageRating}/10</h5>
-                </div>
+                <i className="fa-solid fa-star"></i>
+                <h5>{averageRating}/10</h5>
+            </div>
+
             <div className="img-video-container">
                 <div className="img-container">
                     {tvShow.imageUrl ? (
@@ -67,6 +101,7 @@ export default function TvShowDetails(){
                         <p>No image available</p>
                     )}
                 </div>
+
                 <div className="trailer-container">
                     {tvShow.trailerUrl ? (
                         <iframe
@@ -80,6 +115,7 @@ export default function TvShowDetails(){
                     ) : (
                         <p>No trailer available.</p>
                     )}
+
                     <div className="director data">
                         <p><span className="label">Director: </span>{tvShow.director}</p>
                     </div>
@@ -107,21 +143,42 @@ export default function TvShowDetails(){
                         )}
                         {userId === tvShow.addedBy && (
                             <>
-                                <Link to={pathToUrl(Path.SerialEdit, {tvShowId})} className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Link>
-                                <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
+                                <Link to={pathToUrl(Path.SerialEdit, { tvShowId })} className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Link>
+                                <Button className="red-btn" onClick={deleteButtonClickHandler}><i className="fa-solid fa-trash"></i>Delete</Button>
                             </>
-
                         )}
                     </div>
-                    <RatingModal 
+                    <RatingModal
                         show={showRatingModal}
                         handleClose={() => setShowRatingModal(false)}
                         handleRate={handleRate}
-                        title = 'TV-Show'
+                        title='TV-Show'
                     />
                 </div>
             </div>
 
+            <article className="create-comment">
+                <label htmlFor="comment">Add new comment:</label>
+                <form className="form" onSubmit={onSubmit}>
+                    <textarea name="comment" value={values.comment} onChange={onChange} className="comment"></textarea>
+                    <input className="btn submit" type="submit" value="Add Comment" />
+                </form>
+            </article>
+
+            <div className="details-comments">
+                <h3>Comments</h3>
+                <ul>
+                    {comments.map(({ _id, content, user }) => (
+                        <li key={_id} className="comment">
+                            <p><label className="user-email">{user.email}:</label> {content}</p>
+                        </li>
+                    ))}
+                </ul>
+
+                {comments.length === 0 && (
+                    <p className="no-comment">No comments</p>
+                )}
+            </div>
         </section>
     );
 }

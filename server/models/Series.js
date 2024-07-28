@@ -43,7 +43,7 @@ const seriesSchema = new mongoose.Schema({
         max: 10
     },
     comments: [{
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
     releaseDate: {

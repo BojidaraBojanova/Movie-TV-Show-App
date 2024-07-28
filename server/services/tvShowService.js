@@ -1,4 +1,5 @@
 const TvShow = require('../models/Series');
+const Comment = require('../models/Comment')
 
 exports.add = async(userId, tvShowData) => {
     const addedTvShow = await TvShow.create({
@@ -9,7 +10,15 @@ exports.add = async(userId, tvShowData) => {
     return addedTvShow
 }
 
+exports.addComment = async(tvShowId, text) => {
+    const addedComment = await TvShow.findByIdAndUpdate(tvShowId, text, {new: true, runValidators: true})
+
+    return addedComment;
+}
+
 exports.getAllTvShows = () => TvShow.find();
+
+exports.getAllComments = () => Comment.findById(tvShowId); 
 
 exports.getOne = (tvShowId) => TvShow.findById(tvShowId);
 
@@ -40,3 +49,5 @@ exports.editTvShow = async(tvShowId, tvShowData) => {
 
     return updatedTvShow
 }
+
+exports.deleteTvShow = (tvShowId) => TvShow.findByIdAndDelete(tvShowId);

@@ -29,3 +29,5 @@ export const edit = async (tvShowId, tvShowData) => {
 
     return result;
 }
+
+export const remove = async (tvShowId) => request.remove(`${baseUrl}/${tvShowId}`)

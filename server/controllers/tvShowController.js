@@ -1,5 +1,6 @@
 const router = require('express').Router();
-
+const Comment = require('../models/Comment');
+const Series = require("../models/Series");
 const tvShowService = require("../services/tvShowService")
 
 router.post('/add', async(req, res) => {
@@ -59,6 +60,57 @@ router.put('/edit/:tvShowId', async(req, res) => {
         res.status(201).json(editedTvShow)
     } catch (error) {
         console.error('Error editing the Tv-Show', error);
+        res.status(500).json({message: error.message});
+    }
+})
+
+router.post('/:tvShowId/comments', async(req, res) => {
+    const { user, content } = req.body;
+    const tvShowId = req.params.tvShowId;
+
+    try {
+        const newComment = new Comment({ user, content, item: tvShowId, itemModel: 'Series' });
+        await newComment.save();
+        await Series.findByIdAndUpdate(tvShowId, { $push: { comments: newComment._id } });
+
+        res.status(201).json(newComment);
+    } catch (error) {
+        console.error('Error adding comment', error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+router.get('/:tvShowId/comments', async (req, res) => {
+    const tvShowId = req.params.tvShowId;
+
+    try{
+        const tvShow = await Series.findById(tvShowId).populate({
+            path:'comments',
+            populate: {
+                path: 'user',
+                select: 'email'
+            }
+        });
+
+        res.status(200).json(tvShow);
+    }catch(error){
+        console.error('Error in fetching the TV Show', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.delete('/:tvShowId', async(req, res) => {
+    const tvShowId = req.params.tvShowId;
+
+    try {
+        const deleteTvShow = await tvShowService.deleteTvShow(tvShowId);
+        if(deleteTvShow){
+            res.status(200).json(deleteTvShow);
+        }else{
+            res.status(404).json({error: 'TV-Show not found'})
+        }
+    } catch (error) {
+        console.error('Error deleting the tv-show', error);
         res.status(500).json({message: error.message});
     }
 })

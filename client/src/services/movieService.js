@@ -29,3 +29,5 @@ export const edit = async (movieId, movieData) => {
 
     return result;
 }
+
+export const remove = async (movieId) => request.remove(`${baseUrl}/${movieId}`)

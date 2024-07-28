@@ -1,6 +1,8 @@
 const router = require('express').Router();
-
+const Comment = require('../models/Comment');
+const Movie = require('../models/Movie');
 const movieService = require("../services/movieService")
+
 
 router.post('/add', async(req, res) => {
     const movieData = req.body;
@@ -62,6 +64,57 @@ router.put('/edit/:movieId', async(req, res) => {
         res.status(201).json(editedMovie)
     } catch (error) {
         console.error('Error editing the Movie', error);
+        res.status(500).json({message: error.message});
+    }
+})
+
+router.post('/:movieId/comments', async(req, res) => {
+    const { user, content } = req.body;
+    const movieId = req.params.movieId;
+
+    try {
+        const newComment = new Comment({ user, content, item: movieId, itemModel: 'Movie' });
+        await newComment.save();
+        await Movie.findByIdAndUpdate(movieId, { $push: { comments: newComment._id } });
+
+        res.status(201).json(newComment);
+    } catch (error) {
+        console.error('Error adding comment', error);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+router.get('/:movieId/comments', async (req, res) => {
+    const movieId = req.params.movieId;
+
+    try{
+        const movie = await Movie.findById(movieId).populate({
+            path:'comments',
+            populate: {
+                path: 'user',
+                select: 'email'
+            }
+        });
+
+        res.status(200).json(movie);
+    }catch(error){
+        console.error('Error in fetching the movie', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.delete('/:movieId', async(req, res) => {
+    const movieId = req.params.movieId;
+
+    try {
+        const deleteMovie = await movieService.deleteMovie(movieId);
+        if(deleteMovie){
+            res.status(200).json(deleteMovie);
+        }else{
+            res.status(404).json({error: 'Movie not found'})
+        }
+    } catch (error) {
+        console.error('Error deleting the movie', error);
         res.status(500).json({message: error.message});
     }
 })

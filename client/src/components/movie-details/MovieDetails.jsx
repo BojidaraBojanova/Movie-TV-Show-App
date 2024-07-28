@@ -1,25 +1,60 @@
 import { useContext, useEffect, useState } from "react";
 import * as movieService from '../../services/movieService';
-import { useParams, Link } from "react-router-dom";
+import * as commentService from '../../services/commentService';
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import AuthContext from "../../contexts/authContext";
 import RatingModal from "../ratingModal/RatingModal";
 import { pathToUrl } from "../../utils/pathUtils";
 import Path from "../../paths"
+import useForm from "../../hooks/useForm";
+
 
 export default function MovieDetails() {
+    const navigate = useNavigate()
     const [movie, setMovie] = useState({});
-    const {userId, isAuthenticated} = useContext(AuthContext);
+    const {userId, isAuthenticated, email} = useContext(AuthContext);
     const [showRatingModal, setShowRatingModal] = useState(false);
     const { movieId } = useParams();
+    const [comments, setComments] = useState([]);
+
+
+    const addCommentHandler = async (values) => {
+        try {
+            const newComment = await commentService.createMovie(movieId, { user: userId, content: values.comment });
+            if (email) {
+                newComment.user = { email }; 
+            }
+            setComments((prevComments) => [...prevComments, newComment]);
+            values.comment = ''; 
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    };
+
+    const { values, onChange, onSubmit } = useForm(addCommentHandler, { comment: '' });
+
 
     useEffect(() => {
-        movieService.getOne(movieId)
-            .then(setMovie)
-            .catch(error => {
-                console.error('Error fetching movie details:', error);
-                // Optionally handle error state here
-            });
+        // movieService.getOne(movieId)
+        //     .then(setMovie)
+        //     .catch(error => {
+        //         console.error('Error fetching movie details:', error);
+        //         // Optionally handle error state here
+        //     });
+        const fetchMovieAndComments = async () => {
+            try {
+                const movieData = await movieService.getOne(movieId);
+                setMovie(movieData);
+
+                const commentsData = await commentService.getAllMoviesComments(movieId);
+                setComments(commentsData.comments);
+            } catch (error) {
+                console.error('Error fetching Movie details and comments:', error);
+            }
+        };
+
+        fetchMovieAndComments();
     }, [movieId]);
 
     // Extract year from releaseDate, default to empty if not available
@@ -51,6 +86,16 @@ export default function MovieDetails() {
 
     if(!averageRating){
         averageRating = 0;
+    }
+
+    const deleteButtonClickHHandler = async() => {
+        const hasConfirmed = confirm(`Are you sure you want to delete ${movie.title}`);
+
+        if(hasConfirmed){
+            await movieService.remove(movieId);
+
+            navigate('/movies')
+        }
     }
 
     return (
@@ -111,7 +156,7 @@ export default function MovieDetails() {
                         {userId === movie.addedBy && (
                             <>
                                 <Link to={pathToUrl(Path.MovieEdit, {movieId})} className="white-btn"><i className="fa-solid fa-pen"></i>Edit</Link>
-                                <Button className="red-btn"><i className="fa-solid fa-trash"></i>Delete</Button>
+                                <Button className="red-btn" onClick={deleteButtonClickHHandler}><i className="fa-solid fa-trash"></i>Delete</Button>
                             </>
 
                         )}
@@ -124,6 +169,29 @@ export default function MovieDetails() {
                         title = 'Movie'
                     />
                 </div>
+            </div>
+
+            <article className="create-comment">
+                <label htmlFor="comment">Add new comment:</label>
+                <form className="form" onSubmit={onSubmit}>
+                    <textarea name="comment" value={values.comment} onChange={onChange} className="comment"></textarea>
+                    <input className="btn submit" type="submit" value="Add Comment" />
+                </form>
+            </article>
+
+            <div className="details-comments">
+                <h3>Comments</h3>
+                <ul>
+                    {comments.map(({ _id, content, user }) => (
+                        <li key={_id} className="comment">
+                            <p><label className="user-email">{user.email}:</label> {content}</p>
+                        </li>
+                    ))}
+                </ul>
+
+                {comments.length === 0 && (
+                    <p className="no-comment">No comments</p>
+                )}
             </div>
 
         </section>

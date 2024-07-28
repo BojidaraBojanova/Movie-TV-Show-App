@@ -42,3 +42,5 @@ exports.editMovie = async(movieId, movieData) => {
 
     return updatedMovie
 }
+
+exports.deleteMovie = (movieId) => Movie.findByIdAndDelete(movieId);
