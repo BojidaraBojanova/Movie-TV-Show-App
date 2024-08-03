@@ -95,14 +95,14 @@
 }
 
 .yellow-btn:hover{
-    background-color: #fcc500;
-    color: #111111;
+    background-color: #111;
+    color: #fff;
 }
 
 .white-btn{
     background-color: #F4DFC8;
     color: #111111;
-    border: #111111;
+    border: 1px solid #fff;
     font-weight: bold;
     padding: 0.7em;
     border-radius: 0.5em;
@@ -110,8 +110,8 @@
 }
 
 .white-btn:hover{
-    background-color: #f8d7b3;
-    color: #111111;
+    background-color: #111;
+    color: #fff;
 }
 
 .red-btn{
@@ -120,8 +120,13 @@
     font-weight: bold;
 }
 .red-btn:hover{
-    background-color: #fd2e00;
+    background-color: #111;
+    color: #fff;
 
+}
+
+.blue-btn{
+    font-weight: bold;
 }
 
 .modal-content{

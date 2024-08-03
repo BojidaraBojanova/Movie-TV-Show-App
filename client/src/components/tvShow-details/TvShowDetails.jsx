@@ -8,6 +8,7 @@ import RatingModal from "../ratingModal/RatingModal";
 import { pathToUrl } from "../../utils/pathUtils";
 import Path from "../../paths";
 import useForm from "../../hooks/useForm";
+import Loader from "../loader/Loader";
 
 export default function TvShowDetails() {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ export default function TvShowDetails() {
     const { userId, isAuthenticated, email } = useContext(AuthContext);
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [comments, setComments] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     const addCommentHandler = async (values) => {
         try {
@@ -42,6 +45,8 @@ export default function TvShowDetails() {
                 setComments(commentsData.comments);
             } catch (error) {
                 console.error('Error fetching TV-Show details and comments:', error);
+            } finally{
+                setLoading(false)
             }
         };
 
@@ -83,6 +88,10 @@ export default function TvShowDetails() {
     const day = releaseDate.getDate() || 'Unknown Day';
 
     let averageRating = tvShow.averageRating || 0;
+
+    if(loading){
+        return <Loader/>
+    }
 
     return (
         <section className="tv-show-details">

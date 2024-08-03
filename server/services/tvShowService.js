@@ -18,6 +18,8 @@ exports.addComment = async(tvShowId, text) => {
 
 exports.getAllTvShows = () => TvShow.find();
 
+exports.getAllMoviesByUser = (tvShowId) => TvShow.find({ addedBy: tvShowId });
+
 exports.getAllComments = () => Comment.findById(tvShowId); 
 
 exports.getOne = (tvShowId) => TvShow.findById(tvShowId);

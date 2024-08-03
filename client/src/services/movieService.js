@@ -17,6 +17,14 @@ export const getAll = async() => {
 export const getOne = async(movieId) => {
     const result = await request.get(`${baseUrl}/${movieId}`,);
 
+    console.log('Result:', result);
+
+    return result;
+}
+
+export const getAllMoviesByUser = async(userId) => {
+    const result = await request.get(`${baseUrl}/${userId}/addedMovies`)
+
     return result;
 }
 

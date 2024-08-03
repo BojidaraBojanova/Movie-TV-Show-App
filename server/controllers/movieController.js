@@ -103,6 +103,21 @@ router.get('/:movieId/comments', async (req, res) => {
     }
 });
 
+router.get('/:userId/addedMovies', async(req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const result = await movieService.getAllMoviesByUser(userId);
+        console.log(result)
+        res.status(201).json(result);
+    } catch (error) {
+        console.error('Error fetching movies by user', error);
+        res.status(500).json({ message: error.message });
+        
+    }
+})
+
+
 router.delete('/:movieId', async(req, res) => {
     const movieId = req.params.movieId;
 

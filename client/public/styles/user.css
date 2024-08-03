@@ -1,0 +1,116 @@
+.user-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.name-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.tab-content-wrapper{
+    display: flex;
+    justify-content:space-evenly;
+    padding-top: 1em;
+}
+
+h3{
+    padding: 0.2em;
+    color: #F4DFC8;
+    border-bottom: 2px solid #000;
+    text-align: center;
+
+}
+
+.wrapper{
+    width: 50%;
+    padding: 1em;
+}
+
+.table-wrapper{
+    background-color: transparent;
+    border: 1px solid #000;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+thead tr th{
+    border: 1px solid #000;
+    padding: 0.5em;
+    color: #fc4218;
+    text-align: center;
+}
+
+tbody tr{
+    text-align: center;
+    vertical-align: middle;
+}
+
+tbody tr td{
+    border: 1px solid #000;
+    padding: 0.5em;
+    color: #F4DFC8;
+
+}
+
+tbody tr:hover{
+    background-color: #1e1e1e;
+}
+
+.watchlist-i-btn{
+    height: 65vh;
+}
+
+.center-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.details-btn{
+    font-size: 1em;
+    margin: 0.2em;
+}
+
+.details-btn, .movie-edit-btn{
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.details-btn:hover{
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+.movie-edit-btn{
+    background-color: #f7d1aa;
+    color: #000;
+    border: 1px solid #ddd;
+    font-size: 0.7em;
+}
+
+.movie-edit-btn:hover{
+    background-color: #f6ddc2;
+    transform: scale(1.1);
+}
+
+.delete-btn-user{
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.delete-btn-user:hover{
+    background-color: #c82333;
+    transform: scale(1.1);
+}
+
+.image-wrapper-watchlist{
+    width: 30%;
+}
+
+.watchlist-title{
+    font-weight: bold;
+}

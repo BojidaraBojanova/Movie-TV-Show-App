@@ -55,7 +55,6 @@ const userSchema = new mongoose.Schema({
     watchList: [{
         item: {
             type: mongoose.Schema.Types.ObjectId,
-            // refPath:
             ref:'watchListModel'
         },
         watchListModel: {

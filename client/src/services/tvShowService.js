@@ -20,6 +20,13 @@ export const getOne = async(tvShowId) => {
     return result;
 }
 
+
+export const getAllTvShowByUser = async(userId) => {
+    const result = await request.get(`${baseUrl}/${userId}/addedTvShows`)
+
+    return result;
+}
+
 export const rateTvShow = async(tvShowId, userId, rating) => {
     return await request.post(`${baseUrl}/${tvShowId}/rate`, {userId, rating: Number(rating)})
 }

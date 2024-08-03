@@ -13,6 +13,10 @@ exports.getAllMoves = () => Movie.find();
 
 exports.getOne = (movieId) => Movie.findById(movieId);
 
+exports.getAllMoviesByUser = (userId) => Movie.find({ addedBy: userId });
+
+
+
 exports.rateMovie = async(movieId, userId, rating) => {
     const movie = await Movie.findById(movieId);
     if(!movie){

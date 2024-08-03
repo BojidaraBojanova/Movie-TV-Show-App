@@ -30,13 +30,17 @@ const request = async (method, url, data) => {
         return {};
     }
 
-    const result = await response.json();
+    // const result = await response.json();
 
-    if(!response.ok){
-        throw result;
+    // if(!response.ok){
+    //     throw result;
+    // }
+    if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.message || response.statusText);
     }
 
-    return result;
+    return await response.json();
 };
 
 export const get = request.bind(null, 'GET');

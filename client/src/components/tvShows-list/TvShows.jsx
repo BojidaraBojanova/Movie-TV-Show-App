@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react"
 import TvShowListItem from "./tvShow-list-item/TvShowListItem"
 import * as tvShowService from '../../services/tvShowService';
+import Loader from "../loader/Loader";
 
 export default function TvShows(){
     const [tvShows, setTvShow] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        tvShowService.getAll()
-            .then(result => setTvShow(result))
-            .catch(err => {
-                console.log(err)
-            })
+        const fetchTvShow = async () => {
+            try {
+                const result = await tvShowService.getAll();
+                setTvShow(result)
+            } catch (error) {
+                console.error('Error fetching TV-Shows', error)
+            }finally{
+                setLoading(false);
+            }
+        }
+        
+        fetchTvShow();
+        
     }, [])
+
+    if(loading){
+        return <Loader />
+    }
 
     return(
         <div className='movie-show-wrapper'>

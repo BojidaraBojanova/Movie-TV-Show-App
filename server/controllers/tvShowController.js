@@ -99,6 +99,20 @@ router.get('/:tvShowId/comments', async (req, res) => {
     }
 });
 
+router.get('/:userId/addedTvShows', async(req, res) => {
+    const userId = req.params.userId;
+
+    try {
+        const result = await tvShowService.getAllMoviesByUser(userId);
+        console.log(result)
+        res.status(201).json(result);
+    } catch (error) {
+        console.error('Error fetching tv-shows by user', error);
+        res.status(500).json({ message: error.message });
+        
+    }
+})
+
 router.delete('/:tvShowId', async(req, res) => {
     const tvShowId = req.params.tvShowId;
 
