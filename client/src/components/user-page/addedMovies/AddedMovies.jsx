@@ -52,7 +52,8 @@ export default function AddedMovies({
                     </tr>
                 </thead>
                 <tbody>
-                    {allMoviesByUser.map(movie => (
+                {allMoviesByUser.length > 0 ? (
+                    allMoviesByUser.map(movie => (
                         <tr key={movie._id}>
                             <td>{movie.title}</td>
                             <td>{movie.director}</td>
@@ -61,7 +62,13 @@ export default function AddedMovies({
                             <td className="edit-btn"><Link to={pathToUrl(Path.MovieEdit, { movieId: movie._id})} className="white-btn movie-edit-btn"><i className="fa-solid fa-pen"></i></Link></td>
                             <td><Button className="red-btn delete-btn-user" onClick={() => deleteButtonClickHHandler(movie._id)}><i className="fa-solid fa-trash"></i></Button></td>
                         </tr>
-                    ))}
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="6">No added movies yet</td>
+                    </tr>
+                )}
+                    
                     
                 </tbody>
             </table>

@@ -45,16 +45,23 @@ export default function AddedTvShows() {
                     </tr>
                 </thead>
                 <tbody>
-                    {allTvShowsByUser.map(tvShow => (
-                        <tr key={tvShow._id}>
-                            <td>{tvShow.title}</td>
-                            <td>{tvShow.director}</td>
-                            <td>{tvShow.writer}</td>
-                            <td className="center-btn"><Link to={pathToUrl(Path.SerialsDetails, { tvShowId: tvShow._id })} className="details-btn"><i className="fa-solid fa-circle-info"></i></Link></td>
-                            <td className="edit-btn"><Link to={pathToUrl(Path.SerialEdit, { tvShowId: tvShow._id })} className="white-btn movie-edit-btn"><i className="fa-solid fa-pen"></i></Link></td>
-                            <td><Button className="red-btn" onClick={() => deleteButtonClickHHandler(tvShow._id)}><i className="fa-solid fa-trash"></i></Button></td>
+                    {allTvShowsByUser.length > 0 ? (
+                        allTvShowsByUser.map(tvShow => (
+                            <tr key={tvShow._id}>
+                                <td>{tvShow.title}</td>
+                                <td>{tvShow.director}</td>
+                                <td>{tvShow.writer}</td>
+                                <td className="center-btn"><Link to={pathToUrl(Path.SerialsDetails, { tvShowId: tvShow._id })} className="details-btn"><i className="fa-solid fa-circle-info"></i></Link></td>
+                                <td className="edit-btn"><Link to={pathToUrl(Path.SerialEdit, { tvShowId: tvShow._id })} className="white-btn movie-edit-btn"><i className="fa-solid fa-pen"></i></Link></td>
+                                <td><Button className="red-btn" onClick={() => deleteButtonClickHHandler(tvShow._id)}><i className="fa-solid fa-trash"></i></Button></td>
+                            </tr>
+                        ))
+                    ):(
+                        <tr>
+                            <td colSpan="6">No added TV-shows yet</td>
                         </tr>
-                    ))}
+                    )}
+                    
 
                 </tbody>
             </table>
