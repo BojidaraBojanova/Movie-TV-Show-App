@@ -3,6 +3,10 @@ const WatchList = require('../models/WatchList')
 
 const addToWatchList = async(userId, itemId, itemType) => {
     try {
+
+        console.log('userId', userId);
+        console.log('itemId', itemId);
+        console.log('itemType', itemType);
         const allowedTypes = ['Movie', 'Series'];
         if(!allowedTypes.includes(itemType)){
             throw new Error('Invalid item type');
@@ -13,8 +17,10 @@ const addToWatchList = async(userId, itemId, itemType) => {
             throw new Error('User not found');
         }
 
-        const existingItem = user.watchList.find(watchListItem => watchListItem.item.toString() === itemId && watchListItem.watchListModel === itemType)
+        const existingItem = user.watchList.find(watchListItem => watchListItem.item && watchListItem.item.toString() === itemId && watchListItem.watchListModel === itemType)
     
+        console.log('existingItem', existingItem)
+
         if(existingItem){
             throw new Error(`${itemType} already in watch list`);
         }
@@ -78,14 +84,14 @@ const removeFromWatchList = async (userId, itemId, itemType) => {
         }
 
         user.watchList = user.watchList.filter(
-            (watchListItem) => !(watchListItem.item.toString() === itemId && watchListItem.watchListModel === itemType)
+            (watchListItem) => watchListItem.item && !(watchListItem.item.toString() === itemId && watchListItem.watchListModel === itemType)
         );
         await user.save();
 
         let watchList = await WatchList.findOne({ user: userId });
         if (watchList) {
             watchList.items = watchList.items.filter(
-                (item) => !(item.item.toString() === itemId && item.itemModel === itemType)
+                (item) => item.item && !(item.item.toString() === itemId && item.itemModel === itemType)
             );
             await watchList.save();
         }

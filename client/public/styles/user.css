@@ -115,3 +115,15 @@ tbody tr:hover{
 .watchlist-title{
     font-weight: bold;
 }
+
+.container{
+    width: 100%;
+}
+
+.watchlist-wrapper{
+    width: 100%;
+    display: flex;
+    gap: 5em;
+    justify-content: center;
+    text-align: center;
+}

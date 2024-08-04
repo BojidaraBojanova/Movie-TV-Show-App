@@ -7,6 +7,7 @@ import Watchlist from "./watchlist/Watchlist";
 import EditYourProfile from "./editYourProfile/EditYourProfile";
 import * as watchListService from "../../services/watchListService";
 import * as movieService from "../../services/movieService";
+import * as tvShowService from "../../services/tvShowService";
 import { useParams } from "react-router-dom";
 import Loader from "../loader/Loader";
 
@@ -17,6 +18,7 @@ export default function User() {
     const [activeTab, setActiveTab] = useState('addedMoviesTvShows');
     const [watchList, setWatchList] = useState([]);
     const [movies, setMovies] = useState([]);
+    const [tvShow, setTvShows] = useState([]);
     const [loading, setLoading] = useState(true);
 
 
@@ -38,12 +40,40 @@ export default function User() {
                     const watchListItems = watchListResponse.watchList;
                     setWatchList(watchListItems)
 
-                    const movieDetailsPromises = watchListItems.map(item => 
+                    const movieItems = watchListItems.filter(item => item.itemModel === 'Movie');
+                    const tvShowItems = watchListItems.filter(item => item.itemModel === 'Series');
+
+                    const movieDetailsPromises = movieItems.map(item =>
                         movieService.getOne(item.item)
                     );
                     const movieDetails = await Promise.all(movieDetailsPromises);
-                    console.log('Movie Details:', movieDetails)
-                    setMovies(movieDetails)
+                    setMovies(movieDetails.filter(movie => movie !== null));
+
+                    // Fetch TV show details
+                    const tvShowDetailsPromises = tvShowItems.map(item =>
+                        tvShowService.getOne(item.item)
+                    );
+                    const tvShowDetails = await Promise.all(tvShowDetailsPromises);
+                    setTvShows(tvShowDetails.filter(tvShow => tvShow !== null));
+
+                    // // const movieItems = watchListItems.filter(item => item.itemType === 'Movie')
+                    // const tvShowItems = watchListItems.filter(item => item.itemModel === 'Series')
+
+                    // const movieDetailsPromises = watchListItems.map(item => 
+                    //     movieService.getOne(item.item)
+                    // );
+
+                    // const movieDetails = await Promise.all(movieDetailsPromises);
+                    // console.log('Movie Details:', movieDetails)
+                    // setMovies(movieDetails)
+
+                    // const tvShowDetailsPromises = tvShowItems.map(item => 
+                    //     tvShowService.getOne(item.item)
+                    // )
+
+                    // const tvShowDetails = await Promise.all(tvShowDetailsPromises);
+                    // setTvShow(tvShowDetails)
+
                 }else{
                     throw new Error('No watchlist data received');
                 }
@@ -60,16 +90,34 @@ export default function User() {
         }
     }, [userId]);
 
-    const removeFromWatchList = async (movieId) => {
-        try {
-            await watchListService.remove(userId, movieId, 'Movie')
-            const updatedWatchList = watchList.filter(item => item.item !== movieId);
-            setWatchList(updatedWatchList);
-            console.log(userId)
-            console.log(movieId)
+    const removeFromWatchList = async (itemId, itemType) => {
 
-            const updatedMovies = movies.filter(movie => movie._id !== movieId);
-            setMovies(updatedMovies);
+        try {
+            if(itemType !== 'Movie' && itemType !== 'Series'){
+                throw new Error('Invalid item type')
+            }
+
+            await watchListService.remove(userId, itemId, itemType);
+
+            const updatedWatchList = watchList.filter(item => !(item.item === itemId && item.watchListModel === itemType))
+
+            setWatchList(updatedWatchList);
+
+            if(itemType === 'Movie'){
+                const updatedMovies = movies.filter(movie => movie._id !== itemId);
+                setMovies(updatedMovies);
+            }else if(itemType === 'Series'){
+                const updatedTvShows = tvShow.filter(tvShow => tvShow._id !== itemId);
+                setTvShows(updatedTvShows)
+            }
+            // await watchListService.remove(userId, movieId, 'Movie')
+            // const updatedWatchList = watchList.filter(item => item.item !== movieId);
+            // setWatchList(updatedWatchList);
+            // console.log(userId)
+            // console.log(movieId)
+
+            // const updatedMovies = movies.filter(movie => movie._id !== movieId);
+            // setMovies(updatedMovies);
         } catch (error) {
             console.error('Error');
         }
@@ -115,7 +163,8 @@ export default function User() {
                         show={true}
                         handleClose={() => setActiveTab('')}
                         userId = {userId}
-                        watchlist = {movies}
+                        watchlistMovies = {movies}
+                        watchlistTvShows = {tvShow}
                         removeFromWatchList = {removeFromWatchList}
 
                     />

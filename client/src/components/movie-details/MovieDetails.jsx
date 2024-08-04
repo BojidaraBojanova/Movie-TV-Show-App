@@ -61,7 +61,7 @@ export default function MovieDetails() {
                 const watchListResponse = await watchListService.getWatchList(userId);
 
                 if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
-                    setInWatchList(watchListResponse);
+                    setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === movieId));
                 } else {
                     throw new Error('No watchlist data received');
                 }
@@ -117,7 +117,7 @@ export default function MovieDetails() {
            
     
             if(result.success && Array.isArray(result.watchList)){
-                const isInWatchList = result.watchList.some(item => item.item.toString() === movieId.toString());
+                const isInWatchList = result.watchList.some(item => item.item && item.item.toString() === movieId.toString());
                 console.log('Is in Watchlist in check watchlist:', isInWatchList); 
                 setInWatchList(isInWatchList);
             } else {
@@ -129,17 +129,6 @@ export default function MovieDetails() {
             setInWatchList(false);
         }
     }
-    // const handleAddToWatchlist = async () => {
-    //     console.log('Adding to watchlist:', {userId, movieId, itemType: 'Movie'})
-    //     try {
-    //         const result = await watchListService.add(userId, movieId, 'Movie');
-    //         console.log('Added to watchlist:', result);
-    //         checkWatchListStatus();
-
-    //     } catch (error) {
-    //         console.error('Error adding to watchlist:', error)
-    //     }
-    // }
 
     const handleAddToWatchlist = async () => {
         try {
@@ -150,16 +139,6 @@ export default function MovieDetails() {
             console.error('Error adding to watchlist:', error);
         }
     }
-
-    // const handleRemoveFromWatchlist = async () => {
-    //     try {
-    //         const result = await watchListService.remove(userId, movieId, 'Movie');
-    //         console.log('Removed from watchlist:', result);
-    //         heckWatchListStatus();
-    //     } catch (error) {
-    //         console.error('Error removing from watchlist:', error);
-    //     }
-    // };
 
     const handleRemoveFromWatchlist = async () => {
         try {

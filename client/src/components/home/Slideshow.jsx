@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import * as movieService from '../../services/movieService';
+import Loader from "../loader/Loader"
 
 export default function Slideshow() {
 
@@ -28,7 +29,7 @@ export default function Slideshow() {
     }, [movies]);
 
     if (movies.length === 0) {
-        return <div>Loading...</div>
+        return <Loader />
     }
 
 

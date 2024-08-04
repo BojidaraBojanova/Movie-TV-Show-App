@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import * as tvShowService from '../../services/tvShowService';
 import * as commentService from '../../services/commentService';
+import * as watchListService from '../../services/watchListService';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import AuthContext from "../../contexts/authContext";
@@ -17,6 +18,7 @@ export default function TvShowDetails() {
     const { userId, isAuthenticated, email } = useContext(AuthContext);
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [comments, setComments] = useState([]);
+    const [inWatchList, setInWatchList] = useState(false);
     const [loading, setLoading] = useState(true);
 
 
@@ -27,7 +29,7 @@ export default function TvShowDetails() {
                 newComment.user = { email };
             }
             setComments((prevComments) => [...prevComments, newComment]);
-            values.comment = ''; 
+            values.comment = '';
         } catch (error) {
             console.error('Error adding comment:', error);
         }
@@ -43,15 +45,26 @@ export default function TvShowDetails() {
 
                 const commentsData = await commentService.getAllTvShowComments(tvShowId);
                 setComments(commentsData.comments);
+
+                console.log('userId', userId)
+                const watchListResponse = await watchListService.getWatchList(userId);
+
+                if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
+                    setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === tvShowId));
+                } else {
+                    throw new Error('No watchlist data received');
+                }
+
+                await checkWatchListStatus();
             } catch (error) {
                 console.error('Error fetching TV-Show details and comments:', error);
-            } finally{
+            } finally {
                 setLoading(false)
             }
         };
 
         fetchTvShowAndComments();
-    }, [tvShowId]);
+    }, [tvShowId, userId]);
 
     const getYouTubeEmbedUrl = (url) => {
         if (!url) return '';
@@ -89,8 +102,50 @@ export default function TvShowDetails() {
 
     let averageRating = tvShow.averageRating || 0;
 
-    if(loading){
-        return <Loader/>
+    const checkWatchListStatus = async () => {
+        try {
+            const result = await watchListService.getWatchList(userId);
+
+            console.log(result)
+
+            console.log('tvShowId', tvShowId)
+
+            if (result.success && Array.isArray(result.watchList)) {
+                const isInWatchList = result.watchList.some(item => item.item && item.item.toString() === tvShowId.toString());
+                console.log('Is in Watchlist in check watchlist:', isInWatchList);
+                setInWatchList(isInWatchList);
+            } else {
+                console.error('Invalid watchlist data');
+                setInWatchList(false);
+            }
+        } catch (error) {
+            console.error('Error fetching watchlist status:', error);
+            setInWatchList(false);
+        }
+    }
+
+    const handleAddToWatchlist = async () => {
+        try {
+            const result = await watchListService.add(userId, tvShowId, 'Series');
+            console.log('Added to watchlist:', result);
+            await checkWatchListStatus(); // Ensure watchlist status is updated
+        } catch (error) {
+            console.error('Error adding to watchlist:', error);
+        }
+    }
+
+    const handleRemoveFromWatchlist = async () => {
+        try {
+            const result = await watchListService.remove(userId, tvShowId, 'Series');
+            console.log('Removed from watchlist:', result);
+            await checkWatchListStatus(); // Ensure watchlist status is updated
+        } catch (error) {
+            console.error('Error removing from watchlist:', error);
+        }
+    };
+
+    if (loading) {
+        return <Loader />
     }
 
     return (
@@ -147,7 +202,9 @@ export default function TvShowDetails() {
                         {isAuthenticated && (
                             <>
                                 <Button className="yellow-btn" onClick={() => setShowRatingModal(true)}><i className="fa-regular fa-star"></i>Rate</Button>
-                                <Button>+ Add to Watchlist</Button>
+                                <Button className="blue-btn" onClick={inWatchList ? handleRemoveFromWatchlist : handleAddToWatchlist}>
+                                    {inWatchList ? '- Remove from Watchlist' : '+ Add to Watchlist'}
+                                </Button>
                             </>
                         )}
                         {userId === tvShow.addedBy && (

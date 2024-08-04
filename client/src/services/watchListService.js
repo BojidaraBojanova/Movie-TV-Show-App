@@ -3,12 +3,17 @@ import * as request from "../lib/request";
 const baseUrl = 'http://localhost:3000/watchList';
 
 export const add = async (userId, itemId, itemType) => {
+    console.log(userId)
+    console.log(itemId)
+    console.log(itemType)
+
     try {
         const response = await request.post(`${baseUrl}/add`, { userId, itemId, itemType });
+        console.log('response', response)
         if (response.success) {
             return response;
         } else {
-            throw new Error('Failed to add item');
+            throw new Error(response.message || 'Failed to add item');
         }
     } catch (error) {
         console.error('Error adding to watchlist:', error);
