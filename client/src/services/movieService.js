@@ -35,7 +35,18 @@ export const rateMovie = async(movieId, userId, rating) => {
 export const edit = async (movieId, movieData) => {
     const result = await request.put(`${baseUrl}/edit/${movieId}`, movieData)
 
-    return result;
+    return result; 
 }
 
 export const remove = async (movieId) => request.remove(`${baseUrl}/${movieId}`)
+
+export const getTopRatedMovies = async () => {
+    try {
+        const response = await request.get('http://localhost:3000/top-rated');
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.error('Error fetching top rated movies:', error);
+        throw error;
+    }
+}

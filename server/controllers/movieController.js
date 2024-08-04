@@ -132,6 +132,8 @@ router.delete('/:movieId', async(req, res) => {
         console.error('Error deleting the movie', error);
         res.status(500).json({message: error.message});
     }
-})
+}) 
+
+
 
 module.exports = router;

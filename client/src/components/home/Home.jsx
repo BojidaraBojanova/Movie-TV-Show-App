@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Slideshow from "./Slideshow";
-import TopMovies from "./TopMovies";
+import TopRatedMovies from "./TopRatedMovies";
 import Loader from "../loader/Loader";
 
 export default function Home(){
@@ -29,8 +29,7 @@ export default function Home(){
     return(
         <>
             <Slideshow/>
-            <TopMovies title='Highest Rated'/>
-            <TopMovies title='Last Added'/>
+            <TopRatedMovies/>
         </>
     )
 }

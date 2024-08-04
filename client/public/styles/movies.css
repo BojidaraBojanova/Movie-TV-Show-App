@@ -85,3 +85,17 @@ h1{
 .tv-show-details h1{
     text-align: center;
 }
+
+/* .movies-wrapper h2{
+    margin-bottom: 0;
+} */
+
+.movies-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.items-wrapper{
+    display: flex;
+    justify-content: space-evenly;
+}
