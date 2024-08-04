@@ -19,3 +19,23 @@ export const login = async(email, password) => {
 }
 
 export const logout = () => request.get(`${baseUrl}/logout`);
+
+export const editUser = async (userId, updates) => {
+    try {
+        const result = await request.put(`${baseUrl}/${userId}`, updates);
+        return result;
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+};
+
+export const getUserById = async(userId) => {
+    try {
+        const result = await request.get(`${baseUrl}/${userId}`)
+        return result
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        throw error;
+    }
+}

@@ -37,4 +37,29 @@ router.get('/logout', async(req, res) => {
     }
 })
 
+router.get('/:userId', async(req, res) => {
+    const {userId} = req.params;
+    console.log(userId)
+    try {
+        const result = await userService.getOne(userId);
+        console.log('result:',result)
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error in fetching the user', error);
+        res.status(500).json({message: error.message})
+    }
+})
+
+router.put('/:userId', async(req, res) => {
+    const userData = req.body;
+    const {userId} = req.params;
+    try {
+        const result = await userService.editUser(userId, userData);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error editing the user', error);
+        res.status(500).json({message: error.message})
+    }
+})
+
 module.exports = router;

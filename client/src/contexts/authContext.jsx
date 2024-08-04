@@ -38,6 +38,14 @@ export const AuthProvider = ({
         localStorage.removeItem('token');
     }
 
+    
+    const updatedAuthContext = (newData) => {
+        setAuth(prevState => ({
+            ...prevState,
+            ...newData
+        })); 
+    }
+
     const values = {
         registerSubmitHandler,
         loginSubmitHandler,
@@ -46,8 +54,10 @@ export const AuthProvider = ({
         lastName: auth.lastName,
         email: auth.email,
         userId: auth._id,
-        isAuthenticated: !!auth.token
+        isAuthenticated: !!auth.token,
+        updateAuthContext: updatedAuthContext
     };
+
 
     return(
         <AuthContext.Provider value={values}>

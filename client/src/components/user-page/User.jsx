@@ -8,7 +8,6 @@ import EditYourProfile from "./editYourProfile/EditYourProfile";
 import * as watchListService from "../../services/watchListService";
 import * as movieService from "../../services/movieService";
 import * as tvShowService from "../../services/tvShowService";
-import { useParams } from "react-router-dom";
 import Loader from "../loader/Loader";
 
 
@@ -122,6 +121,15 @@ export default function User() {
             console.error('Error');
         }
     }
+
+    // const handleProfileUpdated = (updatedProfile) => {
+    //     if(updateAuthContext){
+    //         updatedAuthContext({
+    //             firstName: updatedProfile.firstName,
+    //             lastName: updatedProfile.lastName
+    //         })
+    //     }
+    // }
 
     if(loading){
         return <Loader/>

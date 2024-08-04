@@ -61,6 +61,16 @@ exports.login = async(userData) => {
     }
 }
 
+exports.editUser = async(userId, userData) => {
+    if(userData.password){
+        userData.password = await bcrypt.hash(userData.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, userData, {new: true, runValidators: true})
+
+    return updatedUser;
+}
+
 function generateToken(user){
     const payload = {
         _id: user._id,
@@ -71,3 +81,4 @@ function generateToken(user){
 
     return jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
 }
+

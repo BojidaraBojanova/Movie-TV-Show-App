@@ -127,3 +127,11 @@ tbody tr:hover{
     justify-content: center;
     text-align: center;
 }
+
+.edit-user-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
