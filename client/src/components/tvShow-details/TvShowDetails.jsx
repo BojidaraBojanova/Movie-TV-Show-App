@@ -10,6 +10,8 @@ import { pathToUrl } from "../../utils/pathUtils";
 import Path from "../../paths";
 import useForm from "../../hooks/useForm";
 import Loader from "../loader/Loader";
+import useScrollToTop from "../scrollToTop";
+
 
 export default function TvShowDetails() {
     const navigate = useNavigate();
@@ -21,6 +23,7 @@ export default function TvShowDetails() {
     const [inWatchList, setInWatchList] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    useScrollToTop();
 
     const addCommentHandler = async (values) => {
         try {

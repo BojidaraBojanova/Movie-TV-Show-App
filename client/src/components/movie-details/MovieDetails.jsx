@@ -10,6 +10,7 @@ import { pathToUrl } from "../../utils/pathUtils";
 import Path from "../../paths"
 import useForm from "../../hooks/useForm";
 import Loader from "../loader/Loader";
+import useScrollToTop from "../scrollToTop";
 
 
 export default function MovieDetails() {
@@ -22,6 +23,7 @@ export default function MovieDetails() {
     const [inWatchList, setInWatchList] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    useScrollToTop();
 
 
     console.log('inWatchList',inWatchList)

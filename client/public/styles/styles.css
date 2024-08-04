@@ -23,6 +23,15 @@ img{
 
 html{
     font: 16px/1.5 'Roboto', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body{
+    scroll-snap-type: y mandatory;
+}
+
+section{
+    scroll-snap-align: start;
 }
 
 body, input, textarea, button{
