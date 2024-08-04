@@ -24,6 +24,10 @@ exports.getAllComments = () => Comment.findById(tvShowId);
 
 exports.getOne = (tvShowId) => TvShow.findById(tvShowId);
 
+exports.topNewest = () => {
+    return TvShow.find().sort({ releaseDate: -1 }).limit(5)
+}
+
 exports.rateTvShow = async(tvShowId, userId, rating) => {
     const tvShow = await TvShow.findById(tvShowId);
     if(!tvShow){

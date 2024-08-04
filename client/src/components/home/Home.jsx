@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Slideshow from "./Slideshow";
 import TopRatedMovies from "./TopRatedMovies";
 import Loader from "../loader/Loader";
+import TopNewestTvShows from "./TopNewestTvShows";
 
 export default function Home(){
     const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ export default function Home(){
         <>
             <Slideshow/>
             <TopRatedMovies/>
+            <TopNewestTvShows/>
         </>
     )
 }

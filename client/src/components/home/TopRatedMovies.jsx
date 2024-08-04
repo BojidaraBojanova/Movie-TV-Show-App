@@ -41,7 +41,7 @@ export default function TopRatedMovies() {
                 </div>
                 <div className="items-wrapper">
                     {movies.map(movie => (
-                        <Link to={`/movies/${movie._id}`} style={{ textDecoration: 'none' }}>
+                        <Link to={`/movies/${movie._id}`} key={movie._id} style={{ textDecoration: 'none' }}>
                             <Card className='card' style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={movie.imageUrl} />
                                 <Card.Body className='card-body'>

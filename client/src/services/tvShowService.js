@@ -37,4 +37,10 @@ export const edit = async (tvShowId, tvShowData) => {
     return result;
 }
 
+export const getTopNewestTvShow = async () => {
+    const response = await request.get('http://localhost:3000/top-newest');
+
+    return response;
+}
+
 export const remove = async (tvShowId) => request.remove(`${baseUrl}/${tvShowId}`)
