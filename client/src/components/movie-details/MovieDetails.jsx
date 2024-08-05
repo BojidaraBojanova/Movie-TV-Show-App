@@ -60,15 +60,20 @@ export default function MovieDetails() {
                 setComments(commentsData.comments);
 
 
-                const watchListResponse = await watchListService.getWatchList(userId);
+                if(isAuthenticated){
+                    const watchListResponse = await watchListService.getWatchList(userId);
 
-                if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
-                    setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === movieId));
-                } else {
-                    throw new Error('No watchlist data received');
+                    if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
+                        setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === movieId));
+                    } else {
+                        throw new Error('No watchlist data received');
+                    }
+
+                    await checkWatchListStatus();
+
                 }
+                
 
-                await checkWatchListStatus();
 
 
             } catch (error) {

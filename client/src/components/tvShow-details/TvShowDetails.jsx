@@ -49,16 +49,18 @@ export default function TvShowDetails() {
                 const commentsData = await commentService.getAllTvShowComments(tvShowId);
                 setComments(commentsData.comments);
 
-                console.log('userId', userId)
-                const watchListResponse = await watchListService.getWatchList(userId);
+                if (isAuthenticated) {
+                    const watchListResponse = await watchListService.getWatchList(userId);
 
-                if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
-                    setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === tvShowId));
-                } else {
-                    throw new Error('No watchlist data received');
+                    if (watchListResponse.success && Array.isArray(watchListResponse.watchList)) {
+                        setInWatchList(watchListResponse.watchList.some(item => item.item && item.item.toString() === tvShowId));
+                    } else {
+                        throw new Error('No watchlist data received');
+                    }
+
+                    await checkWatchListStatus();
                 }
-
-                await checkWatchListStatus();
+                
             } catch (error) {
                 console.error('Error fetching TV-Show details and comments:', error);
             } finally {
@@ -226,13 +228,17 @@ export default function TvShowDetails() {
                 </div>
             </div>
 
-            <article className="create-comment">
-                <label htmlFor="comment">Add new comment:</label>
-                <form className="form" onSubmit={onSubmit}>
-                    <textarea name="comment" value={values.comment} onChange={onChange} className="comment"></textarea>
-                    <input className="btn submit" type="submit" value="Add Comment" />
-                </form>
-            </article>
+            {isAuthenticated && (
+                <article className="create-comment">
+                    <label htmlFor="comment">Add new comment:</label>
+                    <form className="form" onSubmit={onSubmit}>
+                        <textarea name="comment" value={values.comment} onChange={onChange} className="comment"></textarea>
+                        <input className="btn submit" type="submit" value="Add Comment" />
+                    </form>
+                </article>
+            )}
+
+            
 
             <div className="details-comments">
                 <h3>Comments</h3>
