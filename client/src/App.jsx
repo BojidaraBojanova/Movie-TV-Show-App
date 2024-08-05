@@ -19,33 +19,38 @@ import TvShowCreate from './components/tvShow-create/TvShowCreate';
 import TvShowEdit from './components/tvShow-edit/TvShowEdit';
 import Logout from './components/logout/Logout';
 import AuthGuard from './guards/AuthGuard';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 function App() {
 
   return (
-    <AuthProvider>
-      <Header/>
-      <Routes>
-        <Route path={Path.Home} element={<Home />} />
-        <Route path='/movies' element={<Movies/>} />
-        <Route path='/tvShows' element={<TvShows/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/registration' element={<Registration />} />
-        <Route path='/movies/:movieId' element={<MovieDetails />} />
-        <Route path='/tvShows/:tvShowId' element={<TvShowDetails />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Header />
+        <Routes>
+          <Route path={Path.Home} element={<Home />} />
+          <Route path='/movies' element={<Movies />} />
+          <Route path='/tvShows' element={<TvShows />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/registration' element={<Registration />} />
+          <Route path='/movies/:movieId' element={<MovieDetails />} />
+          <Route path='/tvShows/:tvShowId' element={<TvShowDetails />} />
 
-        <Route element={<AuthGuard/>}>
-          <Route path='/user' element={<User/>}/>
-          <Route path='/movie/create' element={<MovieCreate/>} />
-          <Route path={Path.MovieEdit} element={<MovieEdit />} />
-          <Route path='/tvShow/create' element={<TvShowCreate />} />
-          <Route path={Path.SerialEdit} element={<TvShowEdit />} />
-          <Route path={Path.Logout} element={<Logout/>} />
-        </Route>
-      </Routes>
-      <Footer/>
-    </AuthProvider>
+          <Route element={<AuthGuard />}>
+            <Route path='/user' element={<User />} />
+            <Route path='/movie/create' element={<MovieCreate />} />
+            <Route path={Path.MovieEdit} element={<MovieEdit />} />
+            <Route path='/tvShow/create' element={<TvShowCreate />} />
+            <Route path={Path.SerialEdit} element={<TvShowEdit />} />
+            <Route path={Path.Logout} element={<Logout />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </AuthProvider>
+
+    </ErrorBoundary>
+
   )
 }
 
