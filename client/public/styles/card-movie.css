@@ -2,8 +2,10 @@
     display: flex;
     flex-wrap: wrap;
     background-color: black;
-    padding: 4em 0 4em 0;
-    justify-content: space-evenly;
+    padding: 1em 0 4em 0;
+    margin-top: 2em;
+    margin-bottom: 10em;
+    justify-content: space-evenly;    
 }
 
 .movies-show-library-container{
