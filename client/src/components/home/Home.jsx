@@ -3,9 +3,12 @@ import Slideshow from "./Slideshow";
 import TopRatedMovies from "./TopRatedMovies";
 import Loader from "../loader/Loader";
 import TopNewestTvShows from "./TopNewestTvShows";
+import useScrollToTop from "../scrollToTop";
 
 export default function Home(){
     const [loading, setLoading] = useState(true);
+
+    useScrollToTop();
 
 
     useEffect(() => {

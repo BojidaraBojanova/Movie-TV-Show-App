@@ -19,6 +19,7 @@ export default function EditYourProfile({
         password: '',
         confirmPassword: ''
     })
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -49,14 +50,36 @@ export default function EditYourProfile({
         }))
     }
 
+    const validate = (user) => {
+        const errors = {};
+        if(!user.firstName.trim()) errors.firstName = 'First Name is required';
+        if(!user.lastName.trim()) errors.lastName = 'Last Name is required';
+        if(!user.email.trim()){
+            errors.email = 'Email is required';
+        }else if(!/\S+@\S+\.\S+/.test(user.email)){
+            errors.email = 'Email is invalid';
+        }
+
+        if(user.password && user.password.length < 6){
+            errors.password = 'Password must be at least 6 characters'
+        }
+
+        if(user.password !== user.confirmPassword){
+            errors.confirmPassword = "Password don't match";
+        }
+
+        return errors;
+    }
+
     const handleSubmit = async(e) => {
         e.preventDefault();
+        const validationErrors = validate(user);
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
         try {
-            if(user.password !== user.confirmPassword){
-                alert("Passwords do not match");
-                return
-            }
 
             await authService.editUser(userId, {
                 firstName: user.firstName,
@@ -86,31 +109,33 @@ export default function EditYourProfile({
             <h3>Edit Your Profile</h3>
 
             <Form className='form-container' onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicFirstName">
+            <Form.Group className="mb-3" controlId="formBasicFirstName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" className='input' name='firstName' placeholder="Enter First Name" value={user.firstName} onChange={handleChange}/>
+                    <Form.Control type="text" className='input' name='firstName' placeholder="Enter First Name" value={user.firstName} onChange={handleChange} isInvalid={!!errors.firstName} />
+                    <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicLastName">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" className='input' name='lastName' placeholder="Enter Last Name" value={user.lastName} onChange={handleChange}/>
+                    <Form.Control type="text" className='input' name='lastName' placeholder="Enter Last Name" value={user.lastName} onChange={handleChange} isInvalid={!!errors.lastName}/>
+                    <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>     
-                    <Form.Control type="email" className='input' name='email' placeholder="Enter email" value={user.email} onChange={handleChange}/>
-                    <Form.Text className="text">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
+                    <Form.Control type="email" className='input' name='email' placeholder="Enter email" value={user.email} onChange={handleChange} isInvalid={!!errors.email}/>
+                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" className='input' name='password' placeholder="Password" value={user.password} onChange={handleChange}/>
+                    <Form.Control type="password" className='input' name='password' placeholder="Password" value={user.password} onChange={handleChange} isInvalid={!!errors.password}/>
+                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicRePassword">
                     <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type="password" className='input' name='confirmPassword' placeholder="Confirm Password" value={user.confirmPassword} onChange={handleChange}/>
+                    <Form.Control type="password" className='input' name='confirmPassword' placeholder="Confirm Password" value={user.confirmPassword} onChange={handleChange} isInvalid={!!errors.confirmPassword}/>
+                    <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                 </Form.Group>
 
                 <Button type="submit" className='login-btn'>
