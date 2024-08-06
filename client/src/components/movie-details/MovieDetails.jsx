@@ -178,7 +178,7 @@ export default function MovieDetails() {
 
             <div className="ratings-container">
                 <i className="fa-solid fa-star"></i>
-                <h5>{averageRating}/10</h5>
+                <h5>{averageRating.toFixed(1)}/10</h5>
             </div>
             <div className="img-video-container">
                 <div className="img-container">
