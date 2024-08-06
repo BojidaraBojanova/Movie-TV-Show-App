@@ -38,7 +38,7 @@ This is a Movie/TV Show application that allows users to explore movies and TV s
 
    ```bash
    git clone https://github.com/BojidaraBojanova/Movie-TV-Show-App.git
-   cd movie-tv-show-app
+   cd Movie-TV-Show-App
 2. Navigate to the project directory
 3. Install dependencies for both frontend and backend
 4. Set up MongoDB:
