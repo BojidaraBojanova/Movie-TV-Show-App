@@ -20,6 +20,8 @@ import TvShowEdit from './components/tvShow-edit/TvShowEdit';
 import Logout from './components/logout/Logout';
 import AuthGuard from './guards/AuthGuard';
 import ErrorBoundary from './components/ErrorBoundary';
+import ProtectedRoute from './guards/ProtectedRoute';
+import NotFound from './components/NotFoundPage';
 
 
 function App() {
@@ -32,8 +34,18 @@ function App() {
           <Route path={Path.Home} element={<Home />} />
           <Route path='/movies' element={<Movies />} />
           <Route path='/tvShows' element={<TvShows />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/registration' element={<Registration />} />
+          <Route path='/login' element={
+            <ProtectedRoute 
+              element={<Login />}
+              redirectPath='/'
+            />
+          }/>
+          <Route path='/registration' element={
+            <ProtectedRoute 
+              element={<Registration />}
+              redirectPath='/'
+            />
+          }/>
           <Route path='/movies/:movieId' element={<MovieDetails />} />
           <Route path='/tvShows/:tvShowId' element={<TvShowDetails />} />
 
@@ -45,6 +57,7 @@ function App() {
             <Route path={Path.SerialEdit} element={<TvShowEdit />} />
             <Route path={Path.Logout} element={<Logout />} />
           </Route>
+          <Route path='*' element={<NotFound/>} />
         </Routes>
         <Footer />
       </AuthProvider>
