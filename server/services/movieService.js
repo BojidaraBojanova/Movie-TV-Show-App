@@ -50,3 +50,13 @@ exports.editMovie = async(movieId, movieData) => {
 }
 
 exports.deleteMovie = (movieId) => Movie.findByIdAndDelete(movieId);
+
+exports.search = (title) => {
+    let query = {};
+
+    if(title) {
+        query.title = new RegExp(title, 'i');
+    }
+
+    return Movie.find(query);
+}

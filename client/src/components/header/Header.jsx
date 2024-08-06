@@ -1,11 +1,10 @@
 import { useContext } from 'react';
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../contexts/authContext';
+import Search from './search/Search';
 
 export default function Header(){
     const {
@@ -46,15 +45,7 @@ export default function Header(){
             
           
           </Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2 search-input"
-              aria-label="Search"
-            />
-            <Button className='btn-search'>Search</Button>
-          </Form>
+          <Search/>
         </Navbar.Collapse>
       </Container>
     </Navbar>

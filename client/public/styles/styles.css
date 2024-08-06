@@ -8,6 +8,7 @@
 @import 'movie-details.css';
 @import 'user.css';
 @import 'loader.css';
+@import 'search.css';
 
 *{
     padding: 0;

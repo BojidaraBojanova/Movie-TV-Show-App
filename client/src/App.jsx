@@ -22,6 +22,7 @@ import AuthGuard from './guards/AuthGuard';
 import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './guards/ProtectedRoute';
 import NotFound from './components/NotFoundPage';
+import SearchResults from './components/header/search/SearchResult';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           }/>
           <Route path='/movies/:movieId' element={<MovieDetails />} />
           <Route path='/tvShows/:tvShowId' element={<TvShowDetails />} />
+          <Route path='/search' element={<SearchResults/>} />
 
           <Route element={<AuthGuard />}>
             <Route path='/user' element={<User />} />

@@ -57,3 +57,13 @@ exports.editTvShow = async(tvShowId, tvShowData) => {
 }
 
 exports.deleteTvShow = (tvShowId) => TvShow.findByIdAndDelete(tvShowId);
+
+exports.search = (title) => {
+    let query = {};
+
+    if(title){
+        query.title = new RegExp(title, 'i');
+    }
+
+    return TvShow.find(query);
+}
