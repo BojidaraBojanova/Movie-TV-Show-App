@@ -25,7 +25,13 @@ export default class ErrorBoundary extends Component{
 
     render() {
         if(this.state.hasError){
-            return <h1>404</h1>
+            return (
+                <div className='error-boundary-wrapper'>
+                    <h1>404 Error</h1>
+                </div>
+            )
+           
+            
         }
         return this.props.children;
     }

@@ -76,3 +76,10 @@ body{
     font-size: 8em;
     color: #F4DFC8;
 }
+
+.error-boundary-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
